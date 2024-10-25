@@ -34,7 +34,11 @@ typedef struct __jmp_buf jmp_buf[1];
  * C `setjmp` function.  Returns (up to) twice.  First returns 0, returns a
  * value passed to `longjmp` on the second return.
  */
-__attribute__((returns_twice)) extern "C" int setjmp(jmp_buf env);
+#if defined(__cplusplus)
+extern "C"
+#endif
+  __attribute__((returns_twice)) int
+  setjmp(jmp_buf env);
 __asm__(".section .text.setjmp,\"awG\",@progbits,setjmp,comdat\n"
         ".globl setjmp\n"
         ".p2align 2\n"
@@ -50,7 +54,11 @@ __asm__(".section .text.setjmp,\"awG\",@progbits,setjmp,comdat\n"
 /**
  * C `longjmp` function.  Does not return, jumps back to the `setjmp` call.
  */
-extern "C" void longjmp(jmp_buf env, int val);
+#if defined(__cplusplus)
+extern "C"
+#endif
+  void
+  longjmp(jmp_buf env, int val);
 __asm__(".section .text.longjmp,\"awG\",@progbits,longjmp,comdat\n"
         ".globl longjmp\n"
         ".p2align 2\n"
